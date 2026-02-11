@@ -1,0 +1,56 @@
+customer {
+  id
+  name
+  email
+  phone
+  createdAt
+}
+
+service {
+  id
+  name        // Haircut, Beard, Full Package
+  price
+  description   
+  isActive
+}
+
+payment_method {
+  id
+  type     // bank | twint | cash
+  name     // PostFinance | TWINT | Cash
+  isActive
+}
+
+sales_invoice {
+  id
+  bookingId
+  customerId
+  paymentMethodId
+  amount
+  status        // paid | refunded
+  paidAt
+  createdAt
+}
+
+booking {
+  id
+  customerId
+  serviceId
+  barberId?      // optional for “any barber”
+  date
+  startTime
+  endTime
+  status         // waiting | confirmed | completed | cancelled
+  createdAt
+}
+
+
+sales report{
+    id
+    service
+    customer
+    amount
+    payment method
+    filter by method: bank, cash, Twint
+    filter by monthly, weekly, yearly
+}

@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id             String          @id @default(uuid())
+  name           String?
+  email          String          @unique
+  password       String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  salesInvoices  SalesInvoice[]
+  paymentMethods PaymentMethod[]
+  services       Services[]
+  customers      Customer[]
+}
+
+model Customer {
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  phone         String?
+  userId        String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesInvoices SalesInvoice[]
+  appointments  Appointment[]
+}
+
+model Services {
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  userId        String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  salesInvoices SalesInvoice[]
+  appointments  Appointment[]
+}
+
+model PaymentMethod {
+  id            String            @id @default(uuid())
+  type          PaymentMethodType @default(BANK)
+  name          String?
+  userId        String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+  salesInvoices SalesInvoice[]
+  user          User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum PaymentMethodType {
+  BANK
+  TWINT
+  CASH
+}
+
+model SalesInvoice {
+  id              String   @id @default(uuid())
+  customerId      String
+  serviceId       String
+  paymentMethodId String
+  amount          Float
+  status          String
+  userId          String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  customer      Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  service       Services      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  paymentMethod PaymentMethod @relation(fields: [paymentMethodId], references: [id], onDelete: Cascade)
+}
+
+model Appointment {
+  id         String   @id @default(uuid())
+  customerId String
+  serviceId  String
+  date       DateTime
+  time       DateTime
+  status     String // waiting | confirmed | completed | cancelled
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  service  Services @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+}
