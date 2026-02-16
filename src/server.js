@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
+import invoiceRoutes from "./routes/invoiceRoutes.js";
 import paymentMethodRoutes from "./routes/paymentMethodRoutes.js";
 config();
 connectDB();
@@ -18,6 +19,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/payment-methods", paymentMethodRoutes);
+app.use("/api/invoices", invoiceRoutes);
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () =>
