@@ -92,14 +92,14 @@ src/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/your-username/react-admin-dashboard.git
-cd react-admin-dashboard
+git clone https://github.com/your-username/main_react_dashboard.git
+cd main_react_dashboard
 
 # 2. Install dependencies
-npm install
+pnpm install
 
 # 3. Start the dev server
-npm run dev
+pnpm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
@@ -138,7 +138,7 @@ export default Customers;
 **Change the brand colors:**
 
 ```ts
-// Edit src/styles/index.ts
+// Edit src/styles.ts
 primaryBgColor: "bg-[#YOUR_COLOR]",
 ```
 

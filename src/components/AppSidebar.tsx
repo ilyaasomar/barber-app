@@ -6,7 +6,6 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "./ui/sidebar";
 import {
   DropdownMenu,
@@ -14,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import { useLocation, Link } from "react-router";
 import {
   Home,
@@ -58,9 +57,7 @@ export const sidebarLinks = [
 ];
 const AppSidebar = () => {
   const location = useLocation();
-  const { state } = useSidebar(); // ✅ gives you "expanded" | "collapsed" | "hidden"
-  const isCollapsed = state === "collapsed";
-  console.log(isCollapsed);
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b px-4 py-3 group-data-[collapsible=icon]:p-2">
@@ -68,7 +65,7 @@ const AppSidebar = () => {
           to="/dashboard"
           className="flex items-center gap-3 overflow-hidden"
         >
-          {/* Icon mark — swap this svg for your real logo later */}
+          {/* Icon mark — swap this svg for your real logo if you need! */}
           <div
             className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${styles.primaryBgColor}`}
           >
