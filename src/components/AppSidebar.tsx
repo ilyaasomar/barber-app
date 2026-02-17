@@ -13,47 +13,38 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { ChevronUp } from "lucide-react";
-import { useLocation, Link } from "react-router";
 import {
-  Home,
-  Users,
-  BarChart2,
-  ShoppingCart,
-  Box,
-  MessageCircle,
-  Settings,
-  Bell,
-  FileText,
-  HelpCircle,
+  Award,
+  Calendar,
+  ChevronUp,
+  FileUser,
+  Receipt,
+  Scissors,
+  SmartphoneNfc,
 } from "lucide-react";
+import { useLocation, Link } from "react-router";
+import { Home, Users, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { styles } from "@/styles";
 
 const iconMap = {
   home: Home,
+  smartphone_nfc: SmartphoneNfc,
+  customers: FileUser,
+  services: Award,
+  invoices: Receipt,
+  appointments: Calendar,
   users: Users,
-  chart: BarChart2,
-  "shopping-cart": ShoppingCart,
-  box: Box,
-  "message-circle": MessageCircle,
-  settings: Settings,
-  bell: Bell,
-  "file-text": FileText,
-  "help-circle": HelpCircle,
 };
 
 export const sidebarLinks = [
   { name: "Dashboard", icon: "home", path: "/dashboard" },
+  { name: "Accounts", icon: "smartphone_nfc", path: "/payment-method" },
+  { name: "Customers", icon: "customers", path: "/customers" },
+  { name: "Services", icon: "services", path: "/services" },
+  { name: "Invoices", icon: "invoices", path: "/invoices" },
+  { name: "Appointments", icon: "appointments", path: "/appointments" },
   { name: "Users", icon: "users", path: "/users" },
-  { name: "Analytics", icon: "chart", path: "/analytics" },
-  { name: "Orders", icon: "shopping-cart", path: "/orders" },
-  { name: "Products", icon: "box", path: "/products" },
-  { name: "Messages", icon: "message-circle", path: "/messages" },
-  { name: "Settings", icon: "settings", path: "/settings" },
-  { name: "Notifications", icon: "bell", path: "/notifications" },
-  { name: "Reports", icon: "file-text", path: "/reports" },
-  { name: "Support", icon: "help-circle", path: "/support" },
 ];
 const AppSidebar = () => {
   const location = useLocation();
@@ -69,24 +60,13 @@ const AppSidebar = () => {
           <div
             className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${styles.primaryBgColor}`}
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              className="size-5 text-white"
-              stroke="currentColor"
-              strokeWidth={2.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-              <polyline points="9 22 9 12 15 12 15 22" />
-            </svg>
+            <Scissors className="w-5 h-5 text-white" />
           </div>
 
           {/* Text — hidden when sidebar collapses to icon mode */}
           <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
             <span className="text-[15px] font-semibold tracking-tight text-foreground">
-              IO Inc
+              SW Barber
             </span>
             <span className="text-[11px] text-muted-foreground">
               Admin Dashboard
