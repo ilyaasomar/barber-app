@@ -3,6 +3,12 @@ import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
+
+  console.log({
+    "client name": name,
+    "client email": email,
+    "client passwords": password,
+  });
   try {
     // check if user already exists
     const userExists = await prisma.user.findUnique({
@@ -15,6 +21,7 @@ export const register = async (req, res) => {
     // hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -26,6 +33,7 @@ export const register = async (req, res) => {
     const token = generateToken(newUser.id, res);
     res.status(201).json({
       status: "success",
+      message: "User created successfully!",
       data: {
         user: {
           id: newUser.id,
@@ -58,6 +66,7 @@ export const login = async (req, res) => {
     const token = generateToken(userExist.id, res);
     res.status(200).json({
       status: "success",
+      message: "User logged in successfully!",
       data: {
         user: {
           id: userExist.id,

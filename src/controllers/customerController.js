@@ -2,10 +2,10 @@ import { prisma } from "../config/db.js";
 
 // @route  GET /api/customers
 export const getCustomers = async (req, res) => {
-  const userId = req.user.id; // Get the authenticated user's ID from the request
+  // const userId = req.user.id; // Get the authenticated user's ID from the request
   try {
     const customers = await prisma.customer.findMany({
-      where: { userId: userId },
+      // where: { userId: userId },
     });
     res.status(200).json(customers);
   } catch (error) {
