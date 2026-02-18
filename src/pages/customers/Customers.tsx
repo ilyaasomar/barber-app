@@ -11,7 +11,11 @@ import {
 const Customers = () => {
   const queryClient = useQueryClient();
   // fetch customers
-  const { data: customers, isLoading } = useQuery({
+  const {
+    data: customers,
+    isLoading,
+    isFetching,
+  } = useQuery({
     queryKey: ["customers"],
     queryFn: getCustomers,
   });
@@ -42,9 +46,8 @@ const Customers = () => {
 
   console.log(customers);
 
-  if (isLoading) return <p>Loading...</p>;
   return (
-    <div className="p-6">
+    <div className="p-3">
       <h1 className="text-2xl font-bold mb-4">Customers</h1>
       <div></div>
     </div>

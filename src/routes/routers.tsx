@@ -10,9 +10,11 @@ import { Routes, Route, Navigate } from "react-router";
 import Register from "@/pages/auth/Register";
 import Login from "@/pages/auth/Login";
 import { ProtectedRoute, PublicRoute } from "@/components/ProtectedRoute";
+import { RouteLoader } from "@/components/RouteLoader";
 const Routers = () => {
   return (
     <div>
+      <RouteLoader />
       <Routes>
         {/* 🔒 Protected — only logged-in users */}
         <Route

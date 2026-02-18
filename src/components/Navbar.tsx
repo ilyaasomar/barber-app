@@ -11,8 +11,10 @@ import { SidebarTrigger } from "./ui/sidebar";
 import { Avatar, AvatarBadge, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "react-router";
 import { ThemeToggle } from "./theme-toggle";
+import { useLogout } from "@/pages/auth/Logout";
 
 const Navbar = () => {
+  const logoutMutation = useLogout();
   return (
     <div className="w-full shrink-0 border-b bg-background">
       <div className="px-4 h-14 flex items-center justify-between">
@@ -46,7 +48,10 @@ const Navbar = () => {
                 </DropdownMenuItem>
               </Link>
               <Link to={"/login"}>
-                <DropdownMenuItem variant="destructive">
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => logoutMutation.mutate()}
+                >
                   <LogOut className="h-[1.2rem] w-[1.2rem] mr-2" />
                   Logout
                 </DropdownMenuItem>

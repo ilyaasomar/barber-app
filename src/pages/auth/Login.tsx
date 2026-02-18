@@ -31,11 +31,15 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data.data.token);
       toast.success(data.message);
-      localStorage.setItem("token", data.data.token);
-      queryClient.invalidateQueries({ queryKey: ["login"] });
-      setTimeout(() => navigate("/dashboard"), 1000);
+      // i commented this because i am using cookies
+      // localStorage.setItem("token", data.data.token);
+
+      // Wait a tiny delay for the cookie to be set
+      setTimeout(async () => {
+        await queryClient.refetchQueries({ queryKey: ["me"] });
+        navigate("/dashboard");
+      }, 50); // 50ms usually enough
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {
@@ -47,11 +51,10 @@ const Login = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     loginMutation.mutate(userData);
-    console.log(userData);
   };
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="p-6 w-1/3 bg-gray-50 shadow-lg">
+      <Card className="p-6 w-full md:w-2/3 lg:w-1/3 items-center bg-gray-50 shadow-lg">
         <div className="w-full max-w-sm space-y-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
@@ -90,6 +93,7 @@ const Login = () => {
                   required
                   value={userData.email}
                   onChange={handleChange}
+                  disabled={loginMutation.isPending}
                 />
               </div>
             </div>
@@ -116,6 +120,7 @@ const Login = () => {
                   required
                   value={userData.password}
                   onChange={handleChange}
+                  disabled={loginMutation.isPending}
                 />
                 <button
                   type="button"
@@ -135,10 +140,10 @@ const Login = () => {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full h-11 bg-[#4191F9] hover:bg-[#2d7de8] text-white font-medium group mt-2"
+              className="w-full h-11 bg-[#4191F9] hover:bg-[#2d7de8] text-white font-medium group mt-2 cursor-pointer"
+              disabled={loginMutation.isPending}
             >
-              {/* {loginMutation.isPending ? "Signing in..." : "Sign In"} */}
-              Login
+              {loginMutation.isPending ? "Signing in..." : "Sign In"}
               <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </form>
