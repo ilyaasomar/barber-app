@@ -1,5 +1,7 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
+
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
@@ -14,10 +16,12 @@ const app = express();
 // body parser middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // your frontend URL
-    credentials: true,
+    origin: "http://localhost:5173", // after i deploy i will change this to my domain
+    credentials: true, // 👈 must be true
   }),
 );
 // api routes

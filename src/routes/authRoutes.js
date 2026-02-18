@@ -12,10 +12,8 @@ router.post("/login", validateRequest(loginSchema), login);
 // @route   POST /api/auth -> login a user
 router.post("/logout", logout);
 
-// @route   GET /api/auth/me -> it checks is user has cookie
-// src/api/auth.ts
-export const getMe = async () => {
-  const res = await api.get("/me");
-  return res.data;
-};
+// @route   GET /api/auth/me -> it checks is user has cookies or the browser generated it
+router.get("/me", authMiddleware, (req, res) => {
+  res.json(req.user);
+});
 export default router;

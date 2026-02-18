@@ -6,11 +6,16 @@ export const generateToken = (userId, res) => {
     expiresIn: process.env.JWT_EXPIRES_IN || "7d",
   });
 
+  // this checks if production or development
+  const isProd = process.env.NODE_ENV === "production";
+
   res.cookie("jwt", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 1000 * 60 * 60 * 24 * 7, //7 days
+    secure: isProd,
+    sameSite: isProd ? "none" : "lax",
+    path: "/",
+    maxAge: 1000 * 60 * 60 * 24, //1 days
+    // maxAge: 1000 * 30,
   });
 
   return token;
