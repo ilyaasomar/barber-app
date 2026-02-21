@@ -12,7 +12,10 @@ export const getCustomers = async () => {
 };
 
 export const createCustomer = async (payload: Customer) => {
+  console.log(payload);
+
   const { data } = await api.post("/customers", payload);
+
   return data;
 };
 
@@ -28,6 +31,7 @@ export const updateCustomer = async ({
 };
 
 export const deleteCustomer = async ({ id }: { id: string }) => {
+  console.log(id);
   const { data } = await api.delete(`/customers/${id}`);
   return data;
 };

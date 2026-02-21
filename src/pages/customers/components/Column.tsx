@@ -1,7 +1,7 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-import Actions from "./actions";
+import Actions from "./Actions";
 
 export type CustomerColumn = {
   serialNumber: number;
@@ -30,6 +30,13 @@ export const columns: ColumnDef<CustomerColumn>[] = [
   },
   {
     header: "Options",
-    cell: ({ row }) => <Actions id={row.original.id} />,
+    cell: ({ row }) => (
+      <Actions
+        id={row.original.id}
+        customer_name={row.original.customer_name}
+        email={row.original.email}
+        phone={row.original.phone}
+      />
+    ),
   },
 ];

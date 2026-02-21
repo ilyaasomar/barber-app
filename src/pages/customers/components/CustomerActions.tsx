@@ -1,18 +1,9 @@
-import React from "react";
 import DialogModal from "@/components/reusables/dialog-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -22,15 +13,29 @@ import { Input } from "@/components/ui/input";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import type { UseMutationResult } from "@tanstack/react-query";
-interface CustomerType {
-  customer_name: string;
-  email: string;
-  phone: string;
-}
+import { styles } from "@/styles";
+import { useEffect } from "react";
+import type { Customer } from "@/api/customers";
+import { Loader2 } from "lucide-react";
+
 interface DialogControlProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  createMutation: UseMutationResult<any, Error, CustomerType, unknown>;
+  // create props
+  createMutation?: UseMutationResult<any, unknown, Customer, unknown>;
+  // edit props
+  updateMutation?: UseMutationResult<
+    any,
+    unknown,
+    { id: string; payload: Customer },
+    unknown
+  >;
+  selectedCustomer?: {
+    id: string;
+    customer_name: string;
+    email: string;
+    phone: string;
+  } | null;
 }
 
 const formSchema = z.object({
@@ -45,24 +50,65 @@ const CustomerActions = ({
   isOpen,
   setIsOpen,
   createMutation,
+  updateMutation,
+  selectedCustomer,
 }: DialogControlProps) => {
+  const isEditMode = !!selectedCustomer; // true if editing, false if creating
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      customer_name: "",
-      email: "",
-      phone: "",
+      customer_name: selectedCustomer?.customer_name ?? "",
+      email: selectedCustomer?.email ?? "",
+      phone: selectedCustomer?.phone ?? "",
     },
   });
 
+  // re-fill form whenever selected customer changes
+  useEffect(() => {
+    form.reset({
+      customer_name: selectedCustomer?.customer_name,
+      email: selectedCustomer?.email,
+      phone: selectedCustomer?.phone,
+    });
+  }, [selectedCustomer]);
   function onSubmit(data: z.infer<typeof formSchema>) {
-    createMutation.mutate(data);
-    console.log(data);
+    if (isEditMode) {
+      // to avoid typescript error customer & customer type i have to write and tell customer name=name
+      updateMutation?.mutate({
+        id: selectedCustomer.id,
+        payload: {
+          name: data.customer_name,
+          email: data?.email,
+          phone: data?.phone,
+        },
+      });
+      setTimeout(
+        () => form.reset({ customer_name: "", email: "", phone: "" }),
+        2000,
+      );
+    } else {
+      createMutation?.mutate({
+        name: data.customer_name,
+        email: data?.email,
+        phone: data?.phone,
+      });
+      setTimeout(() => {
+        form.reset({
+          customer_name: "",
+          email: "",
+          phone: "",
+        });
+      }, 2000);
+    }
   }
 
   return (
     <div>
       <DialogModal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <h2 className="text-lg font-semibold mb-4">
+          {isEditMode ? "Edit Customer" : "Add Customer"}
+        </h2>
         <form
           id="customer-form"
           onSubmit={form.handleSubmit(onSubmit)}
@@ -132,11 +178,30 @@ const CustomerActions = ({
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
+                disabled={isEditMode}
               >
                 Reset
               </Button>
-              <Button type="submit" form="customer-form">
-                Submit
+              <Button
+                type="submit"
+                form="customer-form"
+                className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
+              >
+                {isEditMode && updateMutation?.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Updating....
+                  </>
+                ) : createMutation?.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : isEditMode ? (
+                  "Update"
+                ) : (
+                  "Create"
+                )}
               </Button>
             </Field>
           </FieldGroup>

@@ -1,11 +1,6 @@
 "use client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  createCustomer,
-  deleteCustomer,
-  getCustomers,
-  updateCustomer,
-} from "@/api/customers";
+import { createCustomer, getCustomers } from "@/api/customers";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -17,19 +12,15 @@ interface CustomerDataProps {
   phone: string;
   email: string;
 }
-[];
 import ShowCustomerData from "./components/ShowData";
 import { useState } from "react";
 import CustomerActions from "./components/CustomerActions";
+import { toast } from "sonner";
 const Customers = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   // fetch customers
-  const {
-    data: customers,
-    isLoading,
-    isFetching,
-  } = useQuery({
+  const { data: customers } = useQuery({
     queryKey: ["customers"],
     queryFn: getCustomers,
   });
@@ -37,24 +28,17 @@ const Customers = () => {
   // create customer
   const createMutation = useMutation({
     mutationFn: createCustomer,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    onSuccess: (data) => {
+      setTimeout(() => {
+        setIsOpen(false);
+        queryClient.invalidateQueries({ queryKey: ["customers"] });
+        toast.success(data.message);
+      }, 1000);
     },
-  });
-
-  // update customer
-  const updateMutation = useMutation({
-    mutationFn: updateCustomer,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
-    },
-  });
-
-  // delete customer
-  const deleteMutation = useMutation({
-    mutationFn: deleteCustomer,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["customers"] });
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        toast.error((error as any).response?.data?.message);
+      }
     },
   });
 

@@ -1,5 +1,5 @@
 import { DataTable } from "@/components/reusables/data-table";
-import { columns } from "./column";
+import { columns } from "./Column";
 interface ShowCustomerDataProps {
   serialNumber: number;
   id: string;
