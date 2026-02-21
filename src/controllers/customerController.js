@@ -51,11 +51,12 @@ export const createCustomer = async (req, res) => {
         name,
         email,
         phone,
-        userId: userId || null, // Associate the customer with the authenticated user
+        userId: userId || null,
       },
     });
     res.status(201).json({
       status: "success",
+      message: "Customer created successfully!",
       data: {
         customer: newCustomer,
       },
@@ -90,6 +91,7 @@ export const updateCustomer = async (req, res) => {
     });
     res.status(200).json({
       status: "success",
+      message: "Customer updated successfully!",
       data: {
         customer: updatedCustomer,
       },
