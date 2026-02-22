@@ -52,7 +52,13 @@ export const createPaymentMethod = async (req, res) => {
     const paymentMethod = await prisma.paymentMethod.create({
       data: { type, name, userId },
     });
-    res.status(201).json(paymentMethod);
+    res
+      .status(201)
+      .json({
+        status: "success",
+        message: "Payment method created!",
+        data: paymentMethod,
+      });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
