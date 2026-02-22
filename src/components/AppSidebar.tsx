@@ -39,7 +39,7 @@ const iconMap = {
 
 export const sidebarLinks = [
   { name: "Dashboard", icon: "home", path: "/dashboard" },
-  { name: "Accounts", icon: "smartphone_nfc", path: "/payment-method" },
+  { name: "Payment Method", icon: "smartphone_nfc", path: "/payment-method" },
   { name: "Customers", icon: "customers", path: "/customers" },
   { name: "Services", icon: "services", path: "/services" },
   { name: "Invoices", icon: "invoices", path: "/invoices" },

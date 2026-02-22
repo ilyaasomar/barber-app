@@ -12,10 +12,11 @@ interface CustomerDataProps {
   phone: string;
   email: string;
 }
-import ShowCustomerData from "./components/ShowData";
 import { useState } from "react";
 import CustomerActions from "./components/CustomerActions";
 import { toast } from "sonner";
+import { DataTable } from "@/components/reusables/data-table";
+import { columns } from "./components/Column";
 const Customers = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
@@ -65,14 +66,14 @@ const Customers = () => {
           Add Customer
         </Button>
       </div>
-      {/* dataTable */}
+      {/* show data */}
       <div className="mt-6">
         <CustomerActions
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           createMutation={createMutation}
         />
-        <ShowCustomerData data={formattedCustomer} />
+        <DataTable columns={columns} data={formattedCustomer ?? []} />
       </div>
     </div>
   );
