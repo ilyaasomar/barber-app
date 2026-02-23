@@ -10,7 +10,16 @@ export const getPaymentMethods = async (req, res) => {
     const paymentMethods = await prisma.paymentMethod.findMany({
       where: { userId },
     });
-    res.status(200).json(paymentMethods);
+    // fetch the sales invoices
+    const invoices = await prisma.salesInvoice.findMany({ where: { userId } });
+    const paymentMethodsWithBalance = paymentMethods.map((pm) => {
+      const balance = invoices
+        .filter((inv) => inv.paymentMethodId === pm.id)
+        .reduce((sum, inv) => sum + inv.amount, 0);
+
+      return { ...pm, balance };
+    });
+    res.status(200).json(paymentMethodsWithBalance);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -52,13 +61,11 @@ export const createPaymentMethod = async (req, res) => {
     const paymentMethod = await prisma.paymentMethod.create({
       data: { type, name, userId },
     });
-    res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Payment method created!",
-        data: paymentMethod,
-      });
+    res.status(201).json({
+      status: "success",
+      message: "Payment method created!",
+      data: paymentMethod,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -83,7 +90,11 @@ export const updatePaymentMethod = async (req, res) => {
       where: { id, userId },
       data: { type, name },
     });
-    res.status(200).json(updatedPaymentMethod);
+    res.status(201).json({
+      status: "success",
+      message: "Payment method updated!",
+      data: updatedPaymentMethod,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
