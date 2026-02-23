@@ -59,7 +59,11 @@ export const createService = async (req, res) => {
         userId,
       },
     });
-    res.status(201).json(newService);
+    res.status(201).json({
+      status: "success",
+      message: "Service created successfully!",
+      data: newService,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -84,7 +88,13 @@ export const updateService = async (req, res) => {
       where: { id, userId },
       data: { name, description, price },
     });
-    res.status(200).json(updatedService);
+    res
+      .status(200)
+      .json({
+        status: "success",
+        message: "Service created successfully!",
+        data: updatedService,
+      });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

@@ -7,6 +7,11 @@ export const getInvoices = async (req, res) => {
   try {
     const invoiceData = await prisma.salesInvoice.findMany({
       where: { userId: userId },
+      include: {
+        customer: true,
+        service: true,
+        paymentMethod: true,
+      },
     });
     res.status(200).json(invoiceData);
   } catch (error) {
