@@ -1,26 +1,41 @@
-import { deletePaymentMethod, updatePaymentMethod } from "@/api/payment-method";
+import DeleteDialog from "@/components/reusables/delete-dialog";
+import { styles } from "@/styles";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { FileEdit, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import PaymentMethodActions from "./PaymentMethodActions";
-import { FileEdit, Trash } from "lucide-react";
-import { styles } from "@/styles";
-import DeleteDialog from "@/components/reusables/delete-dialog";
-interface ActionProps {
+import ServiceActions from "./ServiceActions";
+import { deleteService, updateService } from "@/api/services";
+interface ActionsProps {
   id: string;
-  type: string;
   name: string;
+  description: string;
+  price: number;
 }
-const Actions = ({ id, type, name }: ActionProps) => {
+const Actions = ({ id, name, description, price }: ActionsProps) => {
   const [isOpen, setOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
   const queryClient = useQueryClient();
-
-  // update mutation
-  const updateMutation = useMutation({
-    mutationFn: updatePaymentMethod,
+  // delete service
+  const deleteMutation = useMutation({
+    mutationFn: deleteService,
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ["payment_methods"] });
+      await queryClient.invalidateQueries({ queryKey: ["services"] });
+      setOpen(false);
+      toast.success(data.message);
+    },
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        toast.error((error as any).response?.data?.message);
+      }
+    },
+  });
+
+  // update service
+  const updateMutation = useMutation({
+    mutationFn: updateService,
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["services"] });
       setEditOpen(false);
       toast.success(data.message);
     },
@@ -31,38 +46,19 @@ const Actions = ({ id, type, name }: ActionProps) => {
       }
     },
   });
-
-  //   delete mutation
-
-  const deleteMutation = useMutation({
-    mutationFn: deletePaymentMethod,
-    onSuccess: (data) => {
-      setTimeout(() => {
-        setOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["payment_methods"] });
-        toast.success(data.message);
-      }, 1000);
-    },
-    onError: (error: unknown) => {
-      if (error instanceof Error) {
-        console.log(error);
-        toast.error((error as any).response?.data?.message);
-      }
-    },
-  });
   return (
-    <div>
-      <PaymentMethodActions
-        isOpen={isEditOpen}
-        setIsOpen={setEditOpen}
-        updateMutation={updateMutation}
-        selectedMethod={{ id, type, name }}
-      />
+    <>
       <DeleteDialog
         isOpen={isOpen}
         setOpen={setOpen}
         onConfirm={() => deleteMutation.mutate(id)}
         isLoading={deleteMutation.isPending}
+      />
+      <ServiceActions
+        isOpen={isEditOpen}
+        setIsOpen={setEditOpen}
+        selectedService={{ id, name, description, price }}
+        updateMutation={updateMutation}
       />
 
       <div className="flex items-center gap-x-2">
@@ -83,7 +79,7 @@ const Actions = ({ id, type, name }: ActionProps) => {
           <Trash className="text-white w-full h-full p-1 cursor-pointer" />
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

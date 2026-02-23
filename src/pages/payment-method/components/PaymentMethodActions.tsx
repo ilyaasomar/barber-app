@@ -23,6 +23,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 interface PaymentMethodActionsProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -79,7 +81,13 @@ const PaymentMethodActions = ({
       name: selectedMethod?.name ?? "",
     },
   });
-  // this useEffect shows
+  //re-fill form whenever selected service changes
+  useEffect(() => {
+    form.reset({
+      type: selectedMethod?.type as "BANK" | "TWINT" | "CASH",
+      name: selectedMethod?.name,
+    });
+  }, [selectedMethod]);
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isEditMode) {
       updateMutation?.mutate({
@@ -163,7 +171,7 @@ const PaymentMethodActions = ({
               form="payment-form"
               className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
             >
-              {/* {isEditMode && updateMutation?.isPending ? (
+              {isEditMode && updateMutation?.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Updating....
@@ -177,8 +185,7 @@ const PaymentMethodActions = ({
                 "Update"
               ) : (
                 "Create"
-              )} */}
-              Submit
+              )}
             </Button>
           </Field>
         </FieldGroup>

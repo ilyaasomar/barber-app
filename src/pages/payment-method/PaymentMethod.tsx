@@ -26,13 +26,10 @@ const PaymentMethod = () => {
   // create payment method
   const createMutation = useMutation({
     mutationFn: createPaymentMethod,
-    onSuccess: (data) => {
-      console.log(data);
-      setTimeout(() => {
-        setIsOpen(false);
-        queryClient.invalidateQueries({ queryKey: ["payment_methods"] });
-        toast.success(data?.message);
-      }, 1000);
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["payment_methods"] });
+      setIsOpen(false);
+      toast.success(data?.message);
     },
     onError: (error: unknown) => {
       if (error instanceof Error) {

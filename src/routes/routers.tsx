@@ -3,7 +3,6 @@ import Appointments from "@/pages/dashboard/Appointments";
 import Customers from "@/pages/customers/Customers";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Invoices from "@/pages/dashboard/Invoices";
-import Services from "@/pages/dashboard/Services";
 import Users from "@/pages/dashboard/Users";
 import { Routes, Route, Navigate } from "react-router";
 import Register from "@/pages/auth/Register";
@@ -11,6 +10,7 @@ import Login from "@/pages/auth/Login";
 import { ProtectedRoute, PublicRoute } from "@/components/ProtectedRoute";
 import { RouteLoader } from "@/components/RouteLoader";
 import PaymentMethod from "@/pages/payment-method/PaymentMethod";
+import Services from "@/pages/services/Services";
 const Routers = () => {
   return (
     <div>
