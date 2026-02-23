@@ -13,6 +13,7 @@ interface PaymentMethodData {
   id: string;
   type: string;
   name: string;
+  balance: number;
 }
 const PaymentMethod = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,12 +41,13 @@ const PaymentMethod = () => {
     },
   });
 
-  console.log(payment_methods);
   const formattedPaymentMethod = payment_methods?.map(
     (method: PaymentMethodData, index: number) => ({
       serialNumber: index + 1,
+      id: method.id,
       type: method.type,
       name: method.name,
+      balance: method.balance,
     }),
   );
   return (

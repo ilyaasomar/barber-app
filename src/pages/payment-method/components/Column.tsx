@@ -1,13 +1,15 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
-// import Actions from "./Actions";
+import Actions from "./Actions";
+import { formatter } from "@/lib/utils";
 
 export type PaymentColumn = {
   serialNumber: number;
   id: string;
   type: string;
   name: string;
+  balance: number;
 };
 
 export const columns: ColumnDef<PaymentColumn>[] = [
@@ -15,6 +17,7 @@ export const columns: ColumnDef<PaymentColumn>[] = [
     accessorKey: "serialNumber",
     header: "SN",
   },
+
   {
     accessorKey: "type",
     header: "Type",
@@ -23,16 +26,20 @@ export const columns: ColumnDef<PaymentColumn>[] = [
     accessorKey: "name",
     header: "Method Name",
   },
+  {
+    accessorKey: "balance",
+    header: "Balance",
+    cell: ({ row }) => formatter.format(row.original.balance),
+  },
 
   {
     header: "Options",
-    // cell: ({ row }) => (
-    //   <Actions
-    //     id={row.original.id}
-    //     customer_name={row.original.customer_name}
-    //     email={row.original.email}
-    //     phone={row.original.phone}
-    //   />
-    // ),
+    cell: ({ row }) => (
+      <Actions
+        id={row.original.id}
+        type={row.original.type}
+        name={row.original.name}
+      />
+    ),
   },
 ];

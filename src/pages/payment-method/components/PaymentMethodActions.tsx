@@ -32,6 +32,16 @@ interface PaymentMethodActionsProps {
     PaymentMethodInterface,
     unknown
   >;
+  updateMutation?: UseMutationResult<
+    any,
+    unknown,
+    {
+      id: string;
+      payload: PaymentMethodInterface;
+    },
+    unknown
+  >;
+  selectedMethod?: { id: string; type: string; name: string } | null;
 }
 const method_types = [
   {
@@ -58,18 +68,28 @@ const PaymentMethodActions = ({
   isOpen,
   setIsOpen,
   createMutation,
+  updateMutation,
+  selectedMethod,
 }: PaymentMethodActionsProps) => {
-  const isEditMode = false;
+  const isEditMode = !!selectedMethod;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      type: "BANK",
-      name: "",
+      type: (selectedMethod?.type as "BANK" | "TWINT" | "CASH") ?? "BANK",
+      name: selectedMethod?.name ?? "",
     },
   });
+  // this useEffect shows
   function onSubmit(values: z.infer<typeof formSchema>) {
-    createMutation?.mutate(values);
-    console.log(values);
+    if (isEditMode) {
+      updateMutation?.mutate({
+        id: selectedMethod.id,
+        payload: { type: values.type, name: values.name },
+      });
+    } else {
+      createMutation?.mutate(values);
+      console.log(values);
+    }
   }
   return (
     <DialogModal isOpen={isOpen} setIsOpen={setIsOpen}>

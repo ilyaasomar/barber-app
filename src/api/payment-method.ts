@@ -15,3 +15,22 @@ export const createPaymentMethod = async (payload: PaymentMethodInterface) => {
   const { data } = await api.post("/payment-methods", payload);
   return data;
 };
+
+// update
+export const updatePaymentMethod = async ({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: PaymentMethodInterface;
+}) => {
+  console.log(id, payload);
+  const { data } = await api.patch(`/payment-methods/${id}`, payload);
+  return data;
+};
+
+// delete
+export const deletePaymentMethod = async (id: string) => {
+  const { data } = await api.delete(`/payment-methods/${id}`);
+  return data;
+};
