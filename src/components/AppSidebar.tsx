@@ -26,6 +26,7 @@ import { useLocation, Link } from "react-router";
 import { Home, Users, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { styles } from "@/styles";
+import { useLogout } from "@/pages/auth/Logout";
 
 const iconMap = {
   home: Home,
@@ -44,11 +45,10 @@ export const sidebarLinks = [
   { name: "Services", icon: "services", path: "/services" },
   { name: "Invoices", icon: "invoices", path: "/invoices" },
   { name: "Appointments", icon: "appointments", path: "/appointments" },
-  { name: "Users", icon: "users", path: "/users" },
 ];
 const AppSidebar = () => {
   const location = useLocation();
-
+  const logoutMutation = useLogout();
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b px-4 py-3 group-data-[collapsible=icon]:p-2">
@@ -111,7 +111,7 @@ const AppSidebar = () => {
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild className="cursor-pointer">
                 <SidebarMenuButton className="font-sans text-[16px]">
                   <Settings /> Settings
                   <ChevronUp className="ml-auto" />
@@ -122,11 +122,14 @@ const AppSidebar = () => {
                 className="w-[--radix-popper-anchor-width]"
               >
                 <Link to={"/profile"}>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
                     <span>Profile</span>
                   </DropdownMenuItem>
                 </Link>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => logoutMutation.mutate()}
+                  className="cursor-pointer"
+                >
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>

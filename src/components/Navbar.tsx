@@ -29,7 +29,7 @@ const Navbar = () => {
           <ThemeToggle />
           {/* USER MENU */}
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="cursor-pointer">
               <Avatar>
                 <AvatarImage
                   src="https://github.com/ilyaasomar.png"
@@ -43,7 +43,7 @@ const Navbar = () => {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <Link to={"/profile"}>
-                <DropdownMenuItem>
+                <DropdownMenuItem className="cursor-pointer">
                   <User className="h-[1.2rem] w-[1.2rem] mr-2" /> Profile
                 </DropdownMenuItem>
               </Link>
@@ -51,6 +51,7 @@ const Navbar = () => {
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => logoutMutation.mutate()}
+                  className="cursor-pointer"
                 >
                   <LogOut className="h-[1.2rem] w-[1.2rem] mr-2" />
                   Logout

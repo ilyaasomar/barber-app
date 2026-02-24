@@ -94,9 +94,10 @@ const PaymentMethodActions = ({
         id: selectedMethod.id,
         payload: { type: values.type, name: values.name },
       });
+      setTimeout(() => form.reset({ type: "BANK", name: "" }), 2000);
     } else {
       createMutation?.mutate(values);
-      console.log(values);
+      setTimeout(() => form.reset({ type: "BANK", name: "" }), 2000);
     }
   }
   return (
@@ -118,7 +119,15 @@ const PaymentMethodActions = ({
                 <FieldLabel htmlFor="payment-type">
                   Payment Method Type
                 </FieldLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={
+                    isEditMode
+                      ? updateMutation?.isPending
+                      : createMutation?.isPending
+                  }
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a method" />
                   </SelectTrigger>
@@ -149,6 +158,11 @@ const PaymentMethodActions = ({
                   aria-invalid={fieldState.invalid}
                   placeholder="Enter name"
                   autoComplete="on"
+                  disabled={
+                    isEditMode
+                      ? updateMutation?.isPending
+                      : createMutation?.isPending
+                  }
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -162,7 +176,11 @@ const PaymentMethodActions = ({
               type="button"
               variant="outline"
               onClick={() => form.reset()}
-              disabled={isEditMode}
+              disabled={
+                isEditMode && isEditMode
+                  ? updateMutation?.isPending
+                  : createMutation?.isPending
+              }
             >
               Reset
             </Button>
@@ -170,6 +188,11 @@ const PaymentMethodActions = ({
               type="submit"
               form="payment-form"
               className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
+              disabled={
+                isEditMode
+                  ? updateMutation?.isPending
+                  : createMutation?.isPending
+              }
             >
               {isEditMode && updateMutation?.isPending ? (
                 <>

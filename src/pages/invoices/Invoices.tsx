@@ -8,15 +8,16 @@ import { styles } from "@/styles";
 interface InvoiceDataProps {
   id: string;
   customerId: string;
+  customer: { id: string; name: string; email: string; phone: string };
   serviceId: string;
+  service: { id: string; name: string; description: string; price: number };
   paymentMethodId: string;
+  paymentMethod: { type: string; name: string };
   amount: number;
-  status: string;
 }
 import { useState } from "react";
 import { toast } from "sonner";
 import { DataTable } from "@/components/reusables/data-table";
-import { createService, getServices } from "@/api/services";
 import { columns } from "./components/Column";
 import InvoiceActions from "./components/InvoiceActions";
 import { createInvoice, getInvoices } from "@/api/invoices";
@@ -24,11 +25,15 @@ const Invoices = () => {
   const queryClient = useQueryClient();
   const [isOpen, setIsOpen] = useState(false);
   // fetch customers
-  const { data: invoices } = useQuery({
+  const { data } = useQuery({
     queryKey: ["invoices"],
     queryFn: getInvoices,
   });
-
+  const invoice_data = data?.invoice_data ?? [];
+  const customer_data = data?.customer_data ?? [];
+  const service_data = data?.service_data ?? [];
+  const payment_method_data = data?.payment_method_data ?? [];
+  console.log("customer data", customer_data);
   // create customer
   const createMutation = useMutation({
     mutationFn: createInvoice,
@@ -45,18 +50,20 @@ const Invoices = () => {
   });
 
   // filter data as i need
-  const formattedService = invoices?.map(
+  const formattedInvoice = invoice_data?.map(
     (invoice: InvoiceDataProps, index: number) => ({
       serialNumber: index + 1,
       id: invoice.id,
       customerId: invoice.customerId,
       customer_name: invoice.customer?.name,
       serviceId: invoice.serviceId,
-      service_name: invoice.service.name,
+      service_name: invoice.service?.name,
       paymentMethodId: invoice.paymentMethodId,
-      method_type: invoice.type,
+      method_type: invoice.paymentMethod?.type,
       amount: invoice.amount,
-      status: invoice.status,
+      customer_data,
+      service_data,
+      payment_method_data,
     }),
   );
 
@@ -78,8 +85,11 @@ const Invoices = () => {
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           createMutation={createMutation}
+          customer_data={customer_data}
+          service_data={service_data}
+          payment_method_data={payment_method_data}
         />
-        <DataTable columns={columns} data={formattedService ?? []} />
+        <DataTable columns={columns} data={formattedInvoice} />
       </div>
     </div>
   );

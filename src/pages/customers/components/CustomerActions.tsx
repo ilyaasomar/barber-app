@@ -127,6 +127,11 @@ const CustomerActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter customer name"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -146,6 +151,11 @@ const CustomerActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter customer email"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -165,6 +175,11 @@ const CustomerActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter customer number"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -186,6 +201,11 @@ const CustomerActions = ({
                 type="submit"
                 form="customer-form"
                 className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
+                disabled={
+                  isEditMode
+                    ? updateMutation?.isPending
+                    : createMutation?.isPending
+                }
               >
                 {isEditMode && updateMutation?.isPending ? (
                   <>

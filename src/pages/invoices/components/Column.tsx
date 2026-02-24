@@ -14,45 +14,37 @@ export type CustomerColumn = {
   paymentMethodId: string;
   method_type: string;
   amount: number;
-  status: string;
+  customer_data?: { id: string; name: string }[];
+  service_data?: { id: string; name: string }[];
+  payment_method_data?: { id: string; type: string }[];
 };
 
 export const columns: ColumnDef<CustomerColumn>[] = [
-  {
-    accessorKey: "serialNumber",
-    header: "SN",
-  },
-  {
-    accessorKey: "customer_name",
-    header: "Customer",
-  },
-  {
-    accessorKey: "service_name",
-    header: "Service",
-  },
-
-  {
-    accessorKey: "method_type",
-    header: "Payment Method",
-  },
+  { accessorKey: "serialNumber", header: "SN" },
+  { accessorKey: "customer_name", header: "Customer" },
+  { accessorKey: "service_name", header: "Service" },
+  { accessorKey: "method_type", header: "Payment Method" },
   {
     accessorKey: "amount",
     header: "Amount",
     cell: ({ row }) => formatter.format(row.original.amount),
   },
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
     header: "Options",
-    // cell: ({ row }) => (
-    //   <Actions
-    //     id={row.original.id}
-    //     name={row.original.name}
-    //     description={row.original.description}
-    //     price={row.original.price}
-    //   />
-    // ),
+    cell: ({ row }) => (
+      <Actions
+        id={row.original.id}
+        customerId={row.original.customerId}
+        customer_name={row.original.customer_name}
+        serviceId={row.original.serviceId}
+        service_name={row.original.service_name}
+        paymentMethodId={row.original.paymentMethodId}
+        method_type={row.original.method_type}
+        amount={row.original.amount}
+        customer_data={row.original.customer_data}
+        service_data={row.original.service_data}
+        payment_method_data={row.original.payment_method_data}
+      />
+    ),
   },
 ];

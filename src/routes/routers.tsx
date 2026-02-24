@@ -1,8 +1,6 @@
 import RootLayout from "@/layout/RootLayout";
-import Appointments from "@/pages/dashboard/Appointments";
 import Customers from "@/pages/customers/Customers";
 import Dashboard from "@/pages/dashboard/Dashboard";
-import Users from "@/pages/dashboard/Users";
 import { Routes, Route, Navigate } from "react-router";
 import Register from "@/pages/auth/Register";
 import Login from "@/pages/auth/Login";
@@ -11,6 +9,7 @@ import { RouteLoader } from "@/components/RouteLoader";
 import PaymentMethod from "@/pages/payment-method/PaymentMethod";
 import Services from "@/pages/services/Services";
 import Invoices from "@/pages/invoices/Invoices";
+import Appointments from "@/pages/appointments/Appointments";
 const Routers = () => {
   return (
     <div>
@@ -31,7 +30,6 @@ const Routers = () => {
           <Route path="/services" element={<Services />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/appointments" element={<Appointments />} />
-          <Route path="/users" element={<Users />} />
         </Route>
 
         {/* login and register */}

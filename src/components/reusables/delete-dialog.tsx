@@ -34,12 +34,14 @@ const DeleteDialog = ({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="cursor-pointer" disabled={isLoading}>
+            Cancel
+          </AlertDialogCancel>
 
           <Button
             onClick={onConfirm}
             disabled={isLoading}
-            className="bg-red-600 hover:bg-red-600 text-white"
+            className="bg-red-600 hover:bg-red-600 text-white cursor-pointer"
           >
             {isLoading ? (
               <>

@@ -119,6 +119,11 @@ const ServiceActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter Service"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -138,6 +143,11 @@ const ServiceActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter description"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -159,6 +169,11 @@ const ServiceActions = ({
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter price"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -172,7 +187,11 @@ const ServiceActions = ({
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
-                disabled={isEditMode}
+                disabled={
+                  isEditMode && isEditMode
+                    ? updateMutation?.isPending
+                    : createMutation?.isPending
+                }
               >
                 Reset
               </Button>
@@ -180,6 +199,11 @@ const ServiceActions = ({
                 type="submit"
                 form="service-form"
                 className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
+                disabled={
+                  isEditMode
+                    ? updateMutation?.isPending
+                    : createMutation?.isPending
+                }
               >
                 {isEditMode && updateMutation?.isPending ? (
                   <>

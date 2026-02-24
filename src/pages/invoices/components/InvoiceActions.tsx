@@ -1,4 +1,3 @@
-import DialogModal from "@/components/reusables/dialog-modal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 
@@ -15,81 +14,115 @@ import { Button } from "@/components/ui/button";
 import type { UseMutationResult } from "@tanstack/react-query";
 import { styles } from "@/styles";
 import { Loader2 } from "lucide-react";
-import type { Service } from "@/api/services";
 import { useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { Invoice } from "@/api/invoices";
+import DialogModal from "@/components/reusables/dialog-modal";
 
 interface DialogControlProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   // create props
-  createMutation?: UseMutationResult<any, unknown, Service, unknown>;
+  createMutation?: UseMutationResult<any, unknown, Invoice, unknown>;
   // edit props
   updateMutation?: UseMutationResult<
     any,
     unknown,
-    { id: string; payload: Service },
+    { id: string; payload: Invoice },
     unknown
   >;
-  selectedService?: {
+  selectedInvoice?: {
     id: string;
-    name: string;
-    description: string;
-    price: number;
+    customerId: string;
+    customer_name: string;
+    serviceId: string;
+    service_name: string;
+    paymentMethodId: string;
+    method_type: string;
+    amount: number;
   } | null;
+  customer_data?: { id: string; name: string }[];
+  service_data?: { id: string; name: string }[];
+  payment_method_data?: { id: string; type: string }[];
 }
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
-  description: z.string().min(2, "Description must be at least 2 characters."),
-  price: z.number().min(0.01, "Price must be greater than 0"),
+  customerId: z.string("Customer must be selected."),
+  serviceId: z.string("Service must be selected."),
+  paymentMethodId: z.string("Method type must be selected."),
+  amount: z
+    .number("Enter price a positive number")
+    .min(0.01, "Price must be greater than 0"),
 });
 const InvoiceActions = ({
   isOpen,
   setIsOpen,
   createMutation,
+  customer_data,
+  service_data,
+  payment_method_data,
   updateMutation,
-  selectedService,
+  selectedInvoice,
 }: DialogControlProps) => {
-  const isEditMode = !!selectedService; // true if editing, false if creating
-
+  const isEditMode = !!selectedInvoice; // true if editing, false if creating
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: selectedService?.name ?? "",
-      description: selectedService?.description ?? "",
-      price: selectedService?.price ?? 0,
+      customerId: selectedInvoice?.customerId ?? "",
+      serviceId: selectedInvoice?.serviceId ?? "",
+      paymentMethodId: selectedInvoice?.paymentMethodId ?? "",
+      amount: selectedInvoice?.amount ?? 0,
     },
   });
 
   useEffect(() => {
     form.reset({
-      name: selectedService?.name,
-      description: selectedService?.description,
-      price: selectedService?.price,
+      customerId: selectedInvoice?.customerId,
+      serviceId: selectedInvoice?.serviceId,
+      paymentMethodId: selectedInvoice?.paymentMethodId,
+      amount: selectedInvoice?.amount,
     });
-  }, [selectedService]);
+  }, [selectedInvoice]);
 
   function onSubmit(data: z.infer<typeof formSchema>) {
+    console.log(selectedInvoice?.customerId);
+
     if (isEditMode) {
       updateMutation?.mutate({
-        id: selectedService.id,
+        id: selectedInvoice.id,
         payload: {
-          name: data.name,
-          description: data?.description,
-          price: data?.price,
+          customerId: data.customerId,
+          serviceId: data?.serviceId,
+          paymentMethodId: data?.paymentMethodId,
+          amount: data.amount,
         },
       });
       setTimeout(
-        () => form.reset({ name: "", description: "", price: 0 }),
+        () =>
+          form.reset({
+            customerId: "",
+            serviceId: "",
+            paymentMethodId: "",
+            amount: 0,
+          }),
         2000,
       );
     } else {
       createMutation?.mutate(data);
       setTimeout(() => {
         form.reset({
-          name: "",
-          description: "",
-          price: 0,
+          customerId: "",
+          serviceId: "",
+          paymentMethodId: "",
+          amount: 0,
         });
       }, 2000);
     }
@@ -99,27 +132,43 @@ const InvoiceActions = ({
     <div>
       <DialogModal isOpen={isOpen} setIsOpen={setIsOpen}>
         <h2 className="text-lg font-semibold mb-4">
-          {isEditMode ? "Edit Service" : "Add Service"}
+          {isEditMode ? "Edit Invoice" : "Add Invoice"}
         </h2>
         <form
-          id="service-form"
+          id="invoice-form"
           onSubmit={form.handleSubmit(onSubmit)}
           className=""
         >
           <FieldGroup className="gap-4">
             <Controller
-              name="name"
+              name="customerId"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="service-name">Service Name</FieldLabel>
-                  <Input
-                    {...field}
-                    id="name"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter Service"
-                    autoComplete="on"
-                  />
+                  <FieldLabel htmlFor="customer-name">Customer</FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a customer" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Customer</SelectLabel>
+                        {customer_data?.map((customer) => (
+                          <SelectItem value={customer.id}>
+                            {customer.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -127,18 +176,34 @@ const InvoiceActions = ({
               )}
             />
             <Controller
-              name="description"
+              name="serviceId"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid} className="gap-2">
-                  <FieldLabel htmlFor="description">Description</FieldLabel>
-                  <Input
-                    {...field}
-                    id="description"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter description"
-                    autoComplete="on"
-                  />
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="service-name">Service</FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Service</SelectLabel>
+                        {service_data?.map((service) => (
+                          <SelectItem value={service.id}>
+                            {service.name}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -146,19 +211,60 @@ const InvoiceActions = ({
               )}
             />
             <Controller
-              name="price"
+              name="paymentMethodId"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="price">Price</FieldLabel>
+                  <FieldLabel htmlFor="payment-name">Payment Method</FieldLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select a method" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Payment Method</SelectLabel>
+                        {payment_method_data?.map((method) => (
+                          <SelectItem value={method.id}>
+                            {method.type}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="amount"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="amount">Price</FieldLabel>
                   <Input
                     {...field}
                     id="price"
-                    {...form.register("price", { valueAsNumber: true })}
+                    {...form.register("amount", { valueAsNumber: true })}
                     type="number"
                     aria-invalid={fieldState.invalid}
                     placeholder="Enter price"
                     autoComplete="on"
+                    disabled={
+                      isEditMode
+                        ? updateMutation?.isPending
+                        : createMutation?.isPending
+                    }
                   />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -172,14 +278,23 @@ const InvoiceActions = ({
                 type="button"
                 variant="outline"
                 onClick={() => form.reset()}
-                disabled={isEditMode}
+                disabled={
+                  isEditMode && isEditMode
+                    ? updateMutation?.isPending
+                    : createMutation?.isPending
+                }
               >
                 Reset
               </Button>
               <Button
                 type="submit"
-                form="service-form"
+                form="invoice-form"
                 className={`cursor-pointer ${styles.primaryBgColor} hover:${styles.primaryBgColor}`}
+                disabled={
+                  isEditMode
+                    ? updateMutation?.isPending
+                    : createMutation?.isPending
+                }
               >
                 {isEditMode && updateMutation?.isPending ? (
                   <>

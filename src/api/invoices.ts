@@ -5,7 +5,6 @@ export interface Invoice {
   serviceId: string;
   paymentMethodId: string;
   amount: number;
-  status: string;
 }
 
 export const getInvoices = async () => {

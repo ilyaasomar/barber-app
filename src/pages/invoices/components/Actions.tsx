@@ -5,22 +5,41 @@ import { FileEdit, Trash } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import ServiceActions from "./InvoiceActions";
-import { deleteService, updateService } from "@/api/services";
+import { deleteInvoice, updateInvoice } from "@/api/invoices";
 interface ActionsProps {
   id: string;
-  name: string;
-  description: string;
-  price: number;
+  customerId: string;
+  customer_name: string;
+  serviceId: string;
+  service_name: string;
+  paymentMethodId: string;
+  method_type: string;
+  amount: number;
+  customer_data?: { id: string; name: string }[];
+  service_data?: { id: string; name: string }[];
+  payment_method_data?: { id: string; type: string }[];
 }
-const Actions = ({ id, name, description, price }: ActionsProps) => {
+const Actions = ({
+  id,
+  customerId,
+  customer_name,
+  serviceId,
+  service_name,
+  paymentMethodId,
+  method_type,
+  amount,
+  customer_data,
+  service_data,
+  payment_method_data,
+}: ActionsProps) => {
   const [isOpen, setOpen] = useState(false);
   const [isEditOpen, setEditOpen] = useState(false);
   const queryClient = useQueryClient();
   // delete service
   const deleteMutation = useMutation({
-    mutationFn: deleteService,
+    mutationFn: deleteInvoice,
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ["services"] });
+      await queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setOpen(false);
       toast.success(data.message);
     },
@@ -33,9 +52,9 @@ const Actions = ({ id, name, description, price }: ActionsProps) => {
 
   // update service
   const updateMutation = useMutation({
-    mutationFn: updateService,
+    mutationFn: updateInvoice,
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ["services"] });
+      await queryClient.invalidateQueries({ queryKey: ["invoices"] });
       setEditOpen(false);
       toast.success(data.message);
     },
@@ -54,11 +73,24 @@ const Actions = ({ id, name, description, price }: ActionsProps) => {
         onConfirm={() => deleteMutation.mutate(id)}
         isLoading={deleteMutation.isPending}
       />
+
       <ServiceActions
         isOpen={isEditOpen}
         setIsOpen={setEditOpen}
-        selectedService={{ id, name, description, price }}
+        selectedInvoice={{
+          id,
+          customerId,
+          customer_name,
+          serviceId,
+          service_name,
+          paymentMethodId,
+          method_type,
+          amount,
+        }}
         updateMutation={updateMutation}
+        customer_data={customer_data}
+        service_data={service_data}
+        payment_method_data={payment_method_data}
       />
 
       <div className="flex items-center gap-x-2">
