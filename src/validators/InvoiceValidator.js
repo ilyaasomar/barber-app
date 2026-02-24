@@ -7,7 +7,6 @@ export const createInvoiceSchema = z.object({
   amount: z
     .number({ message: "Amount must be a number" })
     .positive("Amount must be positive number"),
-  status: z.string("Status must be selected"),
 });
 
 export const updateInvoiceSchema = z.object({
@@ -17,5 +16,4 @@ export const updateInvoiceSchema = z.object({
   amount: z
     .number({ message: "Amount must be a number" })
     .positive("Amount must be positive number"),
-  status: z.string("Status must be selected"),
 });

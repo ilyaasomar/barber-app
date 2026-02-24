@@ -13,12 +13,26 @@ export const getInvoices = async (req, res) => {
         paymentMethod: true,
       },
     });
-    res.status(200).json(invoiceData);
+    const customerData = await prisma.customer.findMany({
+      where: { userId: userId },
+    });
+    const serviceData = await prisma.services.findMany({
+      where: { userId: userId },
+    });
+    const paymentMethodData = await prisma.paymentMethod.findMany({
+      where: { userId: userId },
+    });
+    res.status(200).json({
+      invoice_data: invoiceData,
+      customer_data: customerData,
+      service_data: serviceData,
+      payment_method_data: paymentMethodData,
+    });
   } catch (error) {
     console.log(error);
     res
       .status(500)
-      .json({ message: "Error fetching customers", error: error.message });
+      .json({ message: "Error fetching invoice", error: error.message });
   }
 };
 
@@ -47,7 +61,7 @@ export const getInvoiceById = async (req, res) => {
 // @ create sales invoices
 export const createInvoice = async (req, res) => {
   const userId = req.user.id;
-  const { customerId, serviceId, paymentMethodId, amount, status } = req.body;
+  const { customerId, serviceId, paymentMethodId, amount } = req.body;
   const currentDate = new Date();
   const todaysDate = currentDate.toLocaleDateString();
   console.log("today's date is :", todaysDate);
@@ -78,11 +92,12 @@ export const createInvoice = async (req, res) => {
         serviceId,
         paymentMethodId,
         amount,
-        status,
         userId: userId,
       },
     });
-    res.status(201).json(newInvoice);
+    res
+      .status(201)
+      .json({ message: "Invoice created successfully!", data: newInvoice });
   } catch (error) {
     console.log(error);
     res
@@ -96,7 +111,7 @@ export const createInvoice = async (req, res) => {
 export const updateInvoice = async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
-  const { customerId, serviceId, paymentMethodId, amount, status } = req.body;
+  const { customerId, serviceId, paymentMethodId, amount } = req.body;
   console.log(id);
   try {
     // check if this transaction already exist
@@ -116,11 +131,12 @@ export const updateInvoice = async (req, res) => {
         serviceId,
         paymentMethodId,
         amount,
-        status,
         userId: userId,
       },
     });
-    res.status(201).json(updatedInvoice);
+    res
+      .status(201)
+      .json({ message: "Invoice updated successfully!", data: updatedInvoice });
   } catch (error) {
     console.log(error);
     res

@@ -18,6 +18,7 @@ model User {
   name           String?
   email          String          @unique
   password       String
+  image          String?
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   salesInvoices  SalesInvoice[]
@@ -75,7 +76,6 @@ model SalesInvoice {
   serviceId       String
   paymentMethodId String
   amount          Float
-  status          String
   userId          String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

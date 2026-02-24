@@ -56,7 +56,7 @@ export const createPaymentMethod = async (req, res) => {
       where: { type, name, userId },
     });
     if (existingPaymentMethod) {
-      return res.status(400).json({ error: "Payment method already exists" });
+      return res.status(400).json({ message: "Payment method already exists" });
     }
     const paymentMethod = await prisma.paymentMethod.create({
       data: { type, name, userId },
