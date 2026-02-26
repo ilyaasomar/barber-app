@@ -34,7 +34,7 @@ const Invoices = () => {
   const service_data = data?.service_data ?? [];
   const payment_method_data = data?.payment_method_data ?? [];
   console.log("customer data", customer_data);
-  // create customer
+  // create invoice
   const createMutation = useMutation({
     mutationFn: createInvoice,
     onSuccess: async (data) => {
