@@ -29,7 +29,7 @@ export const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error("Error in auth middleware:", error);
-    res.status(401).json({ message: "Unauthorized" });
+    console.error("Error in auth middleware:", error.message);
+    res.status(401).json({ message: error.message });
   }
 };

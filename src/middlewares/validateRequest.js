@@ -11,6 +11,7 @@ export const validateRequest = (schema) => {
           .flat();
         return res.status(400).json({ message: flatErrors.join(", ") });
       }
+      req.body = result.data;
       next();
     } catch (error) {
       console.error("Error validating request:", error);

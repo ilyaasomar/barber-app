@@ -9,6 +9,9 @@ import customerRoutes from "./routes/customerRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
 import invoiceRoutes from "./routes/invoiceRoutes.js";
 import paymentMethodRoutes from "./routes/paymentMethodRoutes.js";
+import appointmentRoutes from "./routes/appointmentRoute.js";
+import publicAppointmentRoutes from "./routes/publicAppointmentRoute.js";
+
 config();
 connectDB();
 const app = express();
@@ -30,6 +33,10 @@ app.use("/api/customers", customerRoutes);
 app.use("/api/services", serviceRoutes);
 app.use("/api/payment-methods", paymentMethodRoutes);
 app.use("/api/invoices", invoiceRoutes);
+// this one comes from the web application
+app.use("/api/app/appointments", appointmentRoutes);
+// other hand this comes from the website
+app.use("/api/public/appointments", publicAppointmentRoutes);
 
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () =>

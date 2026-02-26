@@ -102,7 +102,7 @@ export const createInvoice = async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .json({ message: "Error fetching customers", error: error.message });
+      .json({ message: "Error creating invoice", error: error.message });
   }
 };
 
@@ -141,7 +141,7 @@ export const updateInvoice = async (req, res) => {
     console.log(error);
     res
       .status(500)
-      .json({ message: "Error fetching customers", error: error.message });
+      .json({ message: "Error updating invoice", error: error.message });
   }
 };
 
@@ -165,6 +165,6 @@ export const deleteInvoice = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Error deleting customer", error: error.message });
+      .json({ message: "Error deleting appointment", error: error.message });
   }
 };
