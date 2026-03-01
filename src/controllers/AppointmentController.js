@@ -10,6 +10,17 @@ export const getAppointments = async (req, res) => {
         service: true,
       },
     });
+
+    // i was preparing for request that comes from the website
+    // and disabling the time already assigned other person.
+    // const currentDate = new Date();
+    // console.log(currentDate);
+
+    // const occupiedDate = appointmentData.filter(
+    //   (data) => data.date <= currentDate,
+    // );
+    // console.log("occupied ates are", occupiedDate);
+
     const customerData = await prisma.customer.findMany({
       where: { userId: userId },
     });
