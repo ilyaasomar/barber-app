@@ -48,18 +48,21 @@ const Appointments = () => {
 
   // filter data as i need
   const formattedInvoice = appointment_data?.map(
-    (appointment: AppointmentDataProps, index: number) => ({
-      serialNumber: index + 1,
-      id: appointment.id,
-      customerId: appointment.customerId,
-      customer_name: appointment.customer?.name,
-      serviceId: appointment.serviceId,
-      service_name: appointment.service?.name,
-      date: appointment.date,
-      status: appointment.status,
-      customer_data,
-      service_data,
-    }),
+    (appointment: AppointmentDataProps, index: number) => {
+      const formattedDateTime = new Date(appointment.date).toLocaleString();
+      return {
+        serialNumber: index + 1,
+        id: appointment.id,
+        customerId: appointment.customerId,
+        customer_name: appointment.customer?.name,
+        serviceId: appointment.serviceId,
+        service_name: appointment.service?.name,
+        date: formattedDateTime,//appointment.date,
+        status: appointment.status,
+        customer_data,
+        service_data,
+      };
+    },
   );
 
   return (
