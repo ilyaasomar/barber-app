@@ -2,7 +2,7 @@ import axios from "axios";
 export const api = axios.create({
   // baseURL: "http://localhost:8000/api", //after deploy i have to change to the backend url
 
-  baseURL: "https://barberappsw-backend.up.railway.app/api",
+  baseURL: "/api",
   withCredentials: true,
 });
 
