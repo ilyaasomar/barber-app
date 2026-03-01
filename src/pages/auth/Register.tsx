@@ -51,7 +51,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="p-6 w-full md:w-2/3 lg:w-1/3 bg-gray-50 shadow-lg items-center">
+      <Card className="p-6 w-full md:w-2/3 lg:w-1/3 bg-gray-50 dark:bg-gray-800 shadow-lg items-center">
         <div className="w-full max-w-sm space-y-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">

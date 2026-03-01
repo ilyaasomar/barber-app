@@ -54,7 +54,7 @@ const Login = () => {
   };
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="p-6 w-full md:w-2/3 lg:w-1/3 items-center bg-gray-50 shadow-lg">
+      <Card className="p-6 w-full md:w-2/3 lg:w-1/3 items-center bg-gray-50 dark:bg-gray-800 shadow-lg">
         <div className="w-full max-w-sm space-y-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
@@ -147,24 +147,6 @@ const Login = () => {
               <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5" />
             </Button>
           </form>
-
-          {/* Footer note */}
-          <p className="text-center text-xs text-muted-foreground">
-            By signing in you agree to our{" "}
-            <Link
-              to="/terms"
-              className="text-[#4191F9] hover:underline underline-offset-4"
-            >
-              Terms
-            </Link>{" "}
-            and{" "}
-            <Link
-              to="/privacy"
-              className="text-[#4191F9] hover:underline underline-offset-4"
-            >
-              Privacy Policy
-            </Link>
-          </p>
         </div>
       </Card>
     </div>
