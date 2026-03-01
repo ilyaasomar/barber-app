@@ -23,7 +23,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // after i deploy i will change this to my domain
+    // origin: "http://localhost:5173", // after i deploy i will change this to my domain
+    origin: "https://barber-appsw.vercel.app",
     credentials: true, // 👈 must be true
   }),
 );
