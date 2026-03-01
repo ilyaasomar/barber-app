@@ -8,6 +8,9 @@
       "source": "/api/:path*",
       "destination": "https://barberappsw-backend.up.railway.app/api/:path*"
     },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
