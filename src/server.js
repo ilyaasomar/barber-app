@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
+import dashboardRoute from "./routes/DashboardRoute.js";
 import authRoutes from "./routes/authRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import serviceRoutes from "./routes/serviceRoutes.js";
@@ -38,7 +39,7 @@ app.use("/api/invoices", invoiceRoutes);
 app.use("/api/app/appointments", appointmentRoutes);
 // other hand this comes from the website
 app.use("/api/public/appointments", publicAppointmentRoutes);
-
+app.use("/api/dashboard", dashboardRoute);
 const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () =>
   console.log(`Server is listening at port: http://localhost:${PORT}`),
