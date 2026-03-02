@@ -30,7 +30,7 @@
 | -------------------------------------------- | ------- | -------------------------------- |
 | [React](https://react.dev)                   | 19      | Frontend UI framework            |
 | [TypeScript](https://www.typescriptlang.org) | 5       | Type safety                      |
-| [Vite](https://vitejs.dev)                   | 6       | Frontend build tool & dev server |
+| [Vite](https://vitejs.dev)                   | 7       | Frontend build tool & dev server |
 | [Node.js](https://nodejs.org/)               | 22      | Backend runtime                  |
 | [Express](https://expressjs.com/)            | 5       | Backend API framework            |
 | [PostgreSQL](https://www.postgresql.org/)    | 18      | Database                         |
@@ -52,42 +52,6 @@
 - **Consistent color system** — centralized style tokens for easy theming
 - **Clean routing** — nested routes with a shared layout via React Router `<Outlet />`
 - **Full backend integration** — Node/Express API with PostgreSQL database
-
----
-
-## ✦ Color System
-
-```ts
-// src/styles/index.ts
-export const styles = {
-  primaryBgColor: "bg-[#1C1C1C]",
-  secondaryBgColor: "bg-[#B0B0B0]",
-  accentBgColor: "bg-[#D4AF37]",
-  primaryColor: "text-[#1C1C1C]",
-  secondaryColor: "text-[#B0B0B0]",
-  accentColor: "text-[#D4AF37]",
-};
-```
-
----
-
-## ✦ Project Structure
-
-```
-src/
-├── components/
-│   ├── AppSidebar.tsx      # Sidebar — logo, nav links, footer menu
-│   ├── Navbar.tsx          # Top bar — sidebar trigger, theme toggle, user avatar
-│   └── ui/                 # shadcn/ui components
-├── layout/
-│   └── RootLayout.tsx      # Shared layout wrapping all routes via <Outlet />
-├── pages/                  # One component per route
-├── routers/
-│   └── Routers.tsx         # All route definitions in one place
-├── styles/
-│   └── index.ts            # Centralized color and style tokens
-└── index.css               # Tailwind v4 + shadcn tokens + Geist font
-```
 
 ---
 
