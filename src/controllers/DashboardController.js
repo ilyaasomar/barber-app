@@ -11,7 +11,7 @@ export const getDashboardData = async (req, res) => {
       include: { customer: true, paymentMethod: true, service: true },
     });
     const totalRevenue = salesInvoice.reduce((sum, rev) => rev.amount + sum, 0);
-    const lastTenTransactions = salesInvoice.slice(0, 5);
+    const lastTenTransactions = salesInvoice.slice(0, 10);
 
     // appointments
     const appointments = await prisma.appointment.count({
