@@ -1,10 +1,19 @@
-![alt text](<public/Screenshot 2026-02-17 130030.png>)
+<img width="1899" height="948" alt="Screenshot 2026-03-02 121930" src="https://github.com/user-attachments/assets/85a23a07-e671-47d5-bc78-7c4ab1348b1a" />
 
 ---
 
 # React Admin Dashboard
 
 ## A production-ready **admin dashboard boilerplate** built with modern React tooling. This is my personal base template — every time I start a new application I use this as the foundation. Feel free to clone it, use it, and build on top of it.
+
+✦ Demo Access
+
+If you want to see it live, here is the demo:
+
+Demo: https://barber-appsw.vercel.app/
+
+Username: admin@gmail.com
+Password: 12345678
 
 ## ✦ What Is This?
 
