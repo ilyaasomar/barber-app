@@ -2,6 +2,7 @@
 
 import type { ColumnDef } from "@tanstack/react-table";
 import Actions from "./Actions";
+import { Badge } from "@/components/ui/badge";
 
 export type CustomerColumn = {
   serialNumber: number;
@@ -24,6 +25,23 @@ export const columns: ColumnDef<CustomerColumn>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status.toLowerCase();
+
+      let className = "bg-gray-200 text-gray-800"; // default
+
+      if (status === "completed") className = "bg-green-100 text-green-800";
+      else if (status === "waiting")
+        className = "bg-yellow-100 text-yellow-800";
+      else if (status === "canceled") className = "bg-red-100 text-red-800";
+
+      return (
+        <Badge className={`px-2 py-1 rounded-full font-medium ${className}`}>
+          {row.original.status.charAt(0).toUpperCase() +
+            row.original.status.slice(1)}
+        </Badge>
+      );
+    },
   },
   {
     header: "Options",
