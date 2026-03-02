@@ -2,49 +2,43 @@
 
 ---
 
-# React Admin Dashboard
+# Barber Shop Management System
 
-## A production-ready **admin dashboard boilerplate** built with modern React tooling. This is my personal base template — every time I start a new application I use this as the foundation. Feel free to clone it, use it, and build on top of it.
-
-✦ Demo Access
-
-If you want to see it live, here is the demo:
-
-Demo: https://barber-appsw.vercel.app/
-
-Username: admin@gmail.com
-Password: 12345678
-
-## ✦ What Is This?
-
-This is a **prepared starter template** (boilerplate) — meaning everything is already wired up and ready to go. No configuration headaches, no setup from scratch. Clone it, add your pages, and start building your product immediately.
-
-It comes with a fully working layout system: collapsible sidebar with navigation links, a sticky navbar with theme toggle and user menu, dark mode support, and a consistent color system — all the things you'd spend days setting up yourself.
+## A full-featured **barber shop management system** built with the PERN stack. This system allows you to manage customers, services, appointments, invoices, and payments — all in one place.
 
 ---
 
-## ✦ Perfect For
+## ✦ Demo Access
 
-- SaaS application dashboards
-- E-commerce admin panels
-- CRM & business tools
-- Analytics platforms
-- Any project that needs a clean admin interface
+> **Demo:** [https://barber-appsw.vercel.app/](https://barber-appsw.vercel.app/)  
+> **Username:** `admin@gmail.com`  
+> **Password:** `12345678`
+
+**System Features:**
+
+- **Customers** — manage client profiles
+- **Services** — add and update services offered
+- **Appointments** — schedule, edit, and track bookings
+- **Invoices** — generate, view, and manage invoices
+- **Payment Methods** — track and manage payments
 
 ---
 
 ## ✦ Tech Stack
 
-| Tool                                         | Version | Purpose                     |
-| -------------------------------------------- | ------- | --------------------------- |
-| [React](https://react.dev)                   | 19      | UI framework                |
-| [TypeScript](https://www.typescriptlang.org) | 5       | Type safety                 |
-| [Vite](https://vitejs.dev)                   | 6       | Build tool & dev server     |
-| [Tailwind CSS](https://tailwindcss.com)      | v4      | Utility-first styling       |
-| [shadcn/ui](https://ui.shadcn.com)           | latest  | Component primitives        |
-| [React Router](https://reactrouter.com)      | v7      | Client-side routing         |
-| [Geist](https://vercel.com/font)             | —       | Typography (via fontsource) |
-| [Lucide React](https://lucide.dev)           | —       | Icons                       |
+| Tool                                         | Version | Purpose                          |
+| -------------------------------------------- | ------- | -------------------------------- |
+| [React](https://react.dev)                   | 19      | Frontend UI framework            |
+| [TypeScript](https://www.typescriptlang.org) | 5       | Type safety                      |
+| [Vite](https://vitejs.dev)                   | 6       | Frontend build tool & dev server |
+| [Node.js](https://nodejs.org/)               | 22      | Backend runtime                  |
+| [Express](https://expressjs.com/)            | 5       | Backend API framework            |
+| [PostgreSQL](https://www.postgresql.org/)    | 18      | Database                         |
+| [Tailwind CSS](https://tailwindcss.com)      | v4      | Styling                          |
+| [shadcn/ui](https://ui.shadcn.com)           | latest  | Component primitives             |
+| [React Router](https://reactrouter.com)      | v7      | Frontend routing                 |
+| [TanStack Query](https://tanstack.com/query) | latest  | Data fetching & caching          |
+| [Lucide React](https://lucide.dev)           | —       | Icons                            |
 
 ---
 
@@ -57,23 +51,21 @@ It comes with a fully working layout system: collapsible sidebar with navigation
 - **Responsive layout** — navbar and content expand when sidebar collapses
 - **Consistent color system** — centralized style tokens for easy theming
 - **Clean routing** — nested routes with a shared layout via React Router `<Outlet />`
-- **Geist font** — clean, modern typography out of the box
+- **Full backend integration** — Node/Express API with PostgreSQL database
 
 ---
 
 ## ✦ Color System
 
-All colors are defined in one place — change them once and they apply everywhere.
-
 ```ts
 // src/styles/index.ts
 export const styles = {
-  primaryBgColor: "bg-[#4191F9]", // Bright Blue  — active states, links, highlights
-  secondaryBgColor: "bg-[#10B981]", // Emerald Green — success, confirm, save actions
-  accentBgColor: "bg-[#6B7280]", // Gray          — hover states
-  primaryColor: "text-[#4191F9]",
-  secondaryColor: "text-[#10B981]",
-  accentColor: "text-[#6B7280]",
+  primaryBgColor: "bg-[#1C1C1C]",
+  secondaryBgColor: "bg-[#B0B0B0]",
+  accentBgColor: "bg-[#D4AF37]",
+  primaryColor: "text-[#1C1C1C]",
+  secondaryColor: "text-[#B0B0B0]",
+  accentColor: "text-[#D4AF37]",
 };
 ```
 
@@ -114,44 +106,6 @@ pnpm run dev
 ```
 
 Open [http://localhost:5173](http://localhost:5173) in your browser.
-
----
-
-## ✦ How To Use This As Your Base
-
-This boilerplate is designed to be your starting point. Here is how to adapt it for a new project:
-
-**Add a new page:**
-
-```tsx
-// 1. Create src/pages/Customers.tsx
-const Customers = () => <div>Customers page</div>;
-export default Customers;
-
-// 2. Register the route in src/routers/Routers.tsx
-<Route path="/customers" element={<Customers />} />
-
-// 3. Add to sidebar in src/components/AppSidebar.tsx
-{ name: "Customers", icon: "users", path: "/customers" }
-```
-
-**Swap the logo:**
-
-```tsx
-// In AppSidebar.tsx SidebarHeader, replace the SVG:
-<img src="/your-logo.svg" alt="Logo" className="size-5" />
-
-// Update the name and subtitle:
-<span className="font-semibold">Your App Name</span>
-<span className="text-muted-foreground text-xs">Your Subtitle</span>
-```
-
-**Change the brand colors:**
-
-```ts
-// Edit src/styles.ts
-primaryBgColor: "bg-[#YOUR_COLOR]",
-```
 
 ---
 
